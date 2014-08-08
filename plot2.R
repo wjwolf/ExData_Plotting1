@@ -1,19 +1,18 @@
 
-
-
-
-readData <- function(path.name, file.name, column.types, missing.types, sep) {
-# modelled after a function in
-# https://github.com/wehrley/wehrley.github.io/blob/master/SOUPTONUTS.md
-    read.csv( paste(path.name, file.name, sep=""), 
-              colClasses=column.types,
-              na.strings=missing.types,
-              sep=sep)
-}
+# Bill Wolf
+# ExData_Plotting1 Homework 1
+# 8/8/14
 
 # load raw data
-path <- "C:\\Users\\wolfw\\Documents\\GitHub\\ExData_Plotting1\\"
-fileName <- "household_power_consumption.txt"
+remoteZip<-"https://raw.github.com/wjwolf/ExData_Plotting1/master/household_power_consumption.zip"
+localRoot <-"household_power_consumption"
+localZip <- paste(localRoot,".zip",sep="")
+localTxt <- paste(localRoot,".txt",sep="")
+
+if (!file.exists(localZip)) {
+    download.file(zipFile,localZip,method="auto")
+}
+
 missingTypes <- c("?", "")
 sep<-";"
 colTypes <- c('character',  # Date  (convert to Date/Time later)
@@ -26,8 +25,13 @@ colTypes <- c('character',  # Date  (convert to Date/Time later)
               'numeric',    # Sub_metering_2
               'numeric'     # Sub_metering_3
 )
-raw.data <- readData(path.name=path, file.name=fileName, column.types=colTypes,
-                     missing.types=missingTypes, sep=sep)
+
+raw.data <-read.csv( unz(localZip,localTxt), 
+                     colClasses=colTypes,
+                     na.strings=missingTypes,
+                     sep=sep
+)
+
 
 # make a copy of the data to clean
 problem.data<-raw.data

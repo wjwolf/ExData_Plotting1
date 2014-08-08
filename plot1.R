@@ -1,12 +1,18 @@
 
 # Bill Wolf
-# ExData Assignment 1
+# ExData_Plotting1 Homework 1
 # 8/8/14
 
 # load raw data
 remoteZip<-"https://raw.github.com/wjwolf/ExData_Plotting1/master/household_power_consumption.zip"
-localZip<- "household_power_consumption.zip"
-localCsv <- "household_power_consumption.csv"
+localRoot <-"household_power_consumption"
+localZip <- paste(localRoot,".zip",sep="")
+localTxt <- paste(localRoot,".txt",sep="")
+
+if (!file.exists(localZip)) {
+  download.file(zipFile,localZip,method="auto")
+}
+
 missingTypes <- c("?", "")
 sep<-";"
 colTypes <- c('character',  # Date  (convert to Date/Time later)
@@ -19,12 +25,12 @@ colTypes <- c('character',  # Date  (convert to Date/Time later)
               'numeric',    # Sub_metering_2
               'numeric'     # Sub_metering_3
 )
-download.file(zipFile,localZip,method="auto")
-file.rename(unzip(localZip),localCsv)
-raw.data <-read.csv( localCsv, 
+
+raw.data <-read.csv( unz(localZip,localTxt), 
                      colClasses=colTypes,
                      na.strings=missingTypes,
-                     sep=sep)
+                     sep=sep
+)
 
 # make a copy of the data to clean
 problem.data<-raw.data
